@@ -1,0 +1,17 @@
+version: '3'  # Docker Composeのファイルフォーマットのバージョン
+
+services:
+  navidrome:
+    image: deluan/navidrome:latest  # 使用するDockerイメージ
+    container_name: navidrome # Dockerコンテナ名
+    restart: unless-stopped # コンテナが落ちたときに自動再起動
+    ports:
+      - "4533:4533"  # ホストのポート:コンテナのポート
+    environment:
+      - ND_SCANSCHEDULE=1h  # 音楽フォルダを再スキャンする間隔
+      - ND_LOGLEVEL=info  # ログのレベル（debug, info, warn, error）
+      - ND_SESSIONTIMEOUT=24h # セッション（ログイン状態）の有効時間
+      - ND_BASEURL=        # リバースプロキシのベースURL指定（未使用なら空）
+    volumes:
+      - ./music:/music  # 音楽ファイル
+      - ./data:/data  # 設定・ライブラリ情報保存
